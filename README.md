@@ -1,33 +1,15 @@
 # dumplings
 
-Thera IDE Server
+Thera IDE Server base on [egg](https://eggjs.org/)
 
-## QuickStart
+预览服务依赖网络连通环境，请确保预览设备和服务在同一个局域网下。
 
-<!-- add docs here for user -->
 
-see [egg docs][egg] for more detail.
 
 ### Development
 ```shell
 $ npm install
-$ npm run dev
+$ node index.js
 $ open http://localhost:7001/
 ```
 
-### Deploy
-
-Use `EGG_SERVER_ENV=prod` to enable prod mode
-
-```shell
-$ EGG_SERVER_ENV=prod npm start
-```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-- Use `npm run autod` to auto detect dependencies upgrade, see [autod](https://www.npmjs.com/package/autod) for more detail.
-
-
-[egg]: https://eggjs.org

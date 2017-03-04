@@ -8,6 +8,10 @@ exports.nunjucks = {
 	package: 'egg-view-nunjucks'
 };
 
-exports.csrf = {
-  enable:false
+module.exports = {
+  security: {
+    csrf: {
+      enable: false,
+    },
+  },
 };
