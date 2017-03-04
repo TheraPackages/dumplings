@@ -1,0 +1,28 @@
+<script type='text/javascript' src='http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js'></script>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+<div class="jumbotron">
+  <h2>打开Preview App 或 使用集成Preview SDK的客户端扫描下面的二维码即可开始预览</h2>
+</div>
+
+<div id="qrcode"></div>
+
+<script>
+  var t= jQuery;
+  console.log(jQuery);
+  $.ajax({
+    url: "/ipAddressPort"
+  }).done(function(data) {
+    t('#qrcode').qrcode(data);
+    console.log(jQuery);
+  });
+</script>
+
+
+
+
+
+
+
