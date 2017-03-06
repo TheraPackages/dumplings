@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "egg": "^1.0.0-rc.2",
+    "egg-bin": "^2.2.3",
     "egg-view-nunjucks": "^2.0.0",
     "gaze": "^1.1.2",
     "websocket": "^1.0.24",
