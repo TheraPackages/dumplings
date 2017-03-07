@@ -14,7 +14,7 @@ module.exports = function*() {
 
     let url = 'https://www.dumplings.alibaba-inc.com/qr?dumplingsServerAddress='
     // let url = 'tmall://page.tm/oreopreview?dumplingsServerAddress='
-    let port = (process.env.DUMPLINGSPORT === undefined) ? '7001':process.env.DUMPLINGSPORT;
+    let port = (process.env.PORT === undefined) ? '7001':process.env.PORT;
 
 
     this.response.body = url + getHostIP()[0] + ':' + port;
