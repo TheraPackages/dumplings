@@ -9,6 +9,7 @@
     "egg-view-nunjucks": "^2.0.0",
     "gaze": "^1.1.2",
     "websocket": "^1.0.24",
+    "weex-builder": "^0.2.4",
     "weex-transformer": "^0.4.3"
   },
   "devDependencies": {
@@ -33,6 +34,9 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
+  },
+  "activationCommands": {
+    "atom-workspace": "never:activate"
   },
   "ci": {
     "version": "6"
