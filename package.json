@@ -2,7 +2,6 @@
   "name": "dumplings",
   "version": "2.0.1",
   "description": "Thera IDE Server",
-  "private": true,
   "dependencies": {
     "egg": "^1.0.0-rc.2",
     "egg-bin": "^2.2.3",
