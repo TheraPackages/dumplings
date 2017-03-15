@@ -7,16 +7,16 @@
 
 const message = 'mock';
 
-let createMockMessageObject = function (file,api,path,content){
+let createMockMessageObject = function (file, api, path, content) {
     const model = {
-        'message' : message,
-        'data' : {
-            'mockList' : [
+        'message': message,
+        'data': {
+            'mockList': [
                 {
-                    'file':file,
+                    'file': file,
                     'api': api,
                     'path': path,
-                    'content':content
+                    'content': content
                 }
             ],
         }

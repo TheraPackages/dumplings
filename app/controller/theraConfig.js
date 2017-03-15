@@ -27,22 +27,22 @@ const fs = require('fs')
 const createMockMessageObject = require('../model/MockMessageModel')
 const TRANSFORM_PATH = "transformPath" // store js file path
 
-module.exports = function*() {
+module.exports = function* () {
     const result = {
         title: 'mockConfig',
     };
     var that = this;
-    this.app.mockfileMap.forEach((val,key,map)=>{
+    this.app.mockfileMap.forEach((val, key, map) => {
         that.app.gazeWather.remove(key);
     })
 
     try {
-        if (this.req['method'] === "POST"){
+        if (this.req['method'] === "POST") {
             let data = this.request.body['data']
             this.app[TRANSFORM_PATH] = data['transformPath']
-            data['mock'].forEach(function (element){
+            data['mock'].forEach(function (element) {
                 that.app.gazeWather.add(element['file'])
-                fs.readFile(element['file'], 'utf8', (error, data)=> {
+                fs.readFile(element['file'], 'utf8', (error, data) => {
                     if (error) {
                         console.log(error)
                     } else {
@@ -53,7 +53,7 @@ module.exports = function*() {
                 })
             })
         }
-    } catch(err){
+    } catch (err) {
         console.log(err);
     }
 

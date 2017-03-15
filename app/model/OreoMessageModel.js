@@ -20,7 +20,7 @@ const message = 'oreo';
 *   若logs不为数组(可能是transform抛出的异常对象) 则直接返回，不过滤
 * */
 function filterLogs(logs, logLevel) {
-    if(!(logs instanceof Array)) return logs;
+    if (!(logs instanceof Array)) return logs;
 
     logLevel = logLevel ? logLevel.toUpperCase() : 'NOTE'
     var logLevels = ['OFF', 'ERROR', 'WARNING', 'NOTE']
@@ -35,17 +35,17 @@ function filterLogs(logs, logLevel) {
     })
 }
 
-let createOreoMessageObject = function (type,template,logs,name,bundleUrl){
+let createOreoMessageObject = function (type, template, logs, name, bundleUrl) {
     const model = {
-        'message' : message,
-        'data' : {
-            'oreoList' : [
+        'message': message,
+        'data': {
+            'oreoList': [
                 {
                     'name': name,
                     'bundleUrl': bundleUrl,
                     'type': type,
                     'template': template,
-                    'logs':filterLogs(logs, 'ERROR')
+                    'logs': filterLogs(logs, 'ERROR')
                 }
             ],
         }

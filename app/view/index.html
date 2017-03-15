@@ -10,19 +10,13 @@
 <div id="qrcode"></div>
 
 <script>
-  var t= jQuery;
+  var t = jQuery;
   console.log(jQuery);
   $.ajax({
     url: "/ipAddressPort"
-  }).done(function(data) {
+  }).done(function (data) {
     t('#qrcode').qrcode(data);
     console.log(jQuery);
   });
+
 </script>
-
-
-
-
-
-
-

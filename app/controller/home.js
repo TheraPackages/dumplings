@@ -8,7 +8,7 @@
 'use strict';
 const path = require('path');
 
-module.exports = function*() {
+module.exports = function* () {
   const result = {
     title: 'dumplings',
   };

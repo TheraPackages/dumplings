@@ -3,16 +3,16 @@
  */
 'use strict'
 
-const   fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 let connectClientPool = module.exports = {};
 
 let createConnectClient = function (req) {
-    return {
-        'headers' : req.httpRequest.headers,
-        'connect' : req.accept(null, req.origin)
-    };
+  return {
+    'headers': req.httpRequest.headers,
+    'connect': req.accept(null, req.origin)
+  };
 }
 
 const MESSAGE_VALUE_SERVER = "preview-server";
@@ -21,33 +21,33 @@ connectClientPool.clients = [];
 connectClientPool.theraConnect;
 connectClientPool.activeClient; // Currently active client who can post message to console panel and be debugged.
 
-connectClientPool.addNewClient = function (req,message) {
-    var headers = req.httpRequest.headers;
-    if(req.httpRequest.headers['from'] === 'thera' || (headers['user-agent']||'').indexOf('Atom')>=0){
+connectClientPool.addNewClient = function (req, message) {
+  var headers = req.httpRequest.headers;
+  if (req.httpRequest.headers['from'] === 'thera' || (headers['user-agent'] || '').indexOf('Atom') >= 0) {
 
-        this.theraConnect = req.accept(null, req.origin);
-        this.theraConnect.on('message', this.handleTheraMessage.bind(this));
+    this.theraConnect = req.accept(null, req.origin);
+    this.theraConnect.on('message', this.handleTheraMessage.bind(this));
 
-    } else {
-        var newClient = createConnectClient(req);
-        this.clients.push(newClient);
-        console.log('Accepted a new connection. Pool size = ' + this.size());
+  } else {
+    var newClient = createConnectClient(req);
+    this.clients.push(newClient);
+    console.log('Accepted a new connection. Pool size = ' + this.size());
 
-        // Choose one client to be activated.
-        this.selectActiveDevice(null, newClient);
-        // update new template
-        newClient['connect'].sendUTF(message);
-        // Push debugger server address to newly connected client.
-        if (this.theraConnect && this.theraConnect.debugServer) {
-          console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
-          newClient['connect'].sendUTF(this.theraConnect.debugServer);
-        }
-        newClient['connect'].on('message', this.onClientMessage.bind(this, newClient));
-        newClient['connect'].on('close', this.onClientDisconnected.bind(this, newClient));
+    // Choose one client to be activated.
+    this.selectActiveDevice(null, newClient);
+    // update new template
+    newClient['connect'].sendUTF(message);
+    // Push debugger server address to newly connected client.
+    if (this.theraConnect && this.theraConnect.debugServer) {
+      console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
+      newClient['connect'].sendUTF(this.theraConnect.debugServer);
     }
+    newClient['connect'].on('message', this.onClientMessage.bind(this, newClient));
+    newClient['connect'].on('close', this.onClientDisconnected.bind(this, newClient));
+  }
 }
 
-connectClientPool.onClientMessage = function(client, message) {
+connectClientPool.onClientMessage = function (client, message) {
   // output client console log to /tmp/previewconsloe.log
   // Only active client can transmit message to Thera.
   if (this.activeClient == client) {
@@ -60,10 +60,10 @@ connectClientPool.onClientMessage = function(client, message) {
       client['device'] = jsonMsg.data.params;
       // console.log(jsonMsg);
     }
-  } catch (ignored) {}
+  } catch (ignored) { }
 }
 
-connectClientPool.onClientDisconnected = function(client, reason) {
+connectClientPool.onClientDisconnected = function (client, reason) {
   this.checkClientlive();
   console.log("Client disconnected. reason = " + reason, " Pool size =", this.size());
   // Notify thera the activating connection has shut down.
@@ -78,7 +78,7 @@ connectClientPool.onClientDisconnected = function(client, reason) {
       }
     }
     this.sendTheraMessage(message);
-    
+
     // Normal procedure: When debug-server receives the disconnection, it will notify dumpling
     // to select a new active client. Some old apps that have not implemented the debugger protocol
     // may cause this.activeClient invalid. So we just select a client as the active one for now.
@@ -86,7 +86,7 @@ connectClientPool.onClientDisconnected = function(client, reason) {
   }
 }
 
-connectClientPool.handleTheraMessage = function(message) {
+connectClientPool.handleTheraMessage = function (message) {
   //noinspection JSAnnotator
   if (message.type === 'utf8') {
     var isCtrl = this.filterControlMessage.apply(this, [message.utf8Data]);
@@ -144,8 +144,8 @@ connectClientPool.selectActiveDevice = function (device, newClient) {
 }
 
 connectClientPool.isEmpty = function () {
-    this.checkClientlive();
-    return this.clients.length < 1;
+  this.checkClientlive();
+  return this.clients.length < 1;
 }
 
 connectClientPool.size = function () {
@@ -154,50 +154,50 @@ connectClientPool.size = function () {
 }
 
 connectClientPool.allClientHeaders = function () {
-    let headers = [];
-    this.checkClientlive();
+  let headers = [];
+  this.checkClientlive();
 
-    this.clients.forEach(function (element) {
-        headers.push(element['headers']);
-    })
+  this.clients.forEach(function (element) {
+    headers.push(element['headers']);
+  })
 
-    return headers;
+  return headers;
 }
 
 connectClientPool.sendAllClientMessage = function (message) {
-    this.checkClientlive();
-    this.clients.forEach(function (client) {
-      client['connect'].sendUTF(message);
-    });
+  this.checkClientlive();
+  this.clients.forEach(function (client) {
+    client['connect'].sendUTF(message);
+  });
 }
 
 connectClientPool.sendWeexLogs = function (logs) {
-    if(this.theraConnect){
-        this.theraConnect.sendUTF(logs);
-    }
+  if (this.theraConnect) {
+    this.theraConnect.sendUTF(logs);
+  }
 }
 
 
-connectClientPool.sendTheraMessage = function(message) {
-    if (this.theraConnect && this.theraConnect.state === 'open') {
-        if (!(typeof message === 'string'))
-            message = JSON.stringify(message);
-        this.theraConnect.sendUTF(message);
-    }
+connectClientPool.sendTheraMessage = function (message) {
+  if (this.theraConnect && this.theraConnect.state === 'open') {
+    if (!(typeof message === 'string'))
+      message = JSON.stringify(message);
+    this.theraConnect.sendUTF(message);
+  }
 }
 
 connectClientPool.sendTransformSuccessNotify = function (weexLogs) {
-    if(this.theraConnect){
-        let message = JSON.stringify({"message": "transformSuccessNotify","data":{"logs":weexLogs}})
-        this.theraConnect.sendUTF(message);
-    }
+  if (this.theraConnect) {
+    let message = JSON.stringify({ "message": "transformSuccessNotify", "data": { "logs": weexLogs } })
+    this.theraConnect.sendUTF(message);
+  }
 }
 
 connectClientPool.sendTransformFailedNotify = function (err) {
-    if(this.theraConnect){
-        let message = JSON.stringify({"message": "transformFailedNotify","data":{"error":err}})
-        this.theraConnect.sendUTF(message)
-    }
+  if (this.theraConnect) {
+    let message = JSON.stringify({ "message": "transformFailedNotify", "data": { "error": err } })
+    this.theraConnect.sendUTF(message)
+  }
 }
 
 /**
@@ -210,9 +210,9 @@ connectClientPool.sendTransformFailedNotify = function (err) {
     检查 WebSocket connect双供通道是否有效，失效通道将会被踢出连接池
  */
 connectClientPool.checkClientlive = function () {
-    for(let i = this.clients.length - 1; i > -1 ; --i){
-        if(this.clients[i]['connect'].state !== 'open'){
-            this.clients.splice(i,1);
-        }
+  for (let i = this.clients.length - 1; i > -1; --i) {
+    if (this.clients[i]['connect'].state !== 'open') {
+      this.clients.splice(i, 1);
     }
+  }
 }

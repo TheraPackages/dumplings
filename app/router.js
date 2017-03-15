@@ -8,17 +8,17 @@
 'use strict';
 
 
-module.exports = function(app) {
+module.exports = function (app) {
   /*GET method*/
   app.get('/', app.controller.home);
-  app.get('/iOSSimluatorList',app.controller.iOSSimluator)
-  app.get('/watchFiles',app.controller.watchFiles)
-  app.get('/connectClients',app.controller.connectClients)
-  app.get('/ipAddressPort',app.controller.ipAddressPort)
-  app.get('/removeMockConfig',app.controller.removeMockConfig)
+  app.get('/iOSSimluatorList', app.controller.iOSSimluator)
+  app.get('/watchFiles', app.controller.watchFiles)
+  app.get('/connectClients', app.controller.connectClients)
+  app.get('/ipAddressPort', app.controller.ipAddressPort)
+  app.get('/removeMockConfig', app.controller.removeMockConfig)
 
 
   /*POST method*/
-  app.post('/watchFiles',app.controller.watchFiles);
-  app.post('/theraConfig',app.controller.theraConfig);
+  app.post('/watchFiles', app.controller.watchFiles);
+  app.post('/theraConfig', app.controller.theraConfig);
 };

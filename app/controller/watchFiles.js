@@ -5,12 +5,12 @@
 
 'use strict'
 
-module.exports = function*() {
+module.exports = function* () {
     const result = {
         title: 'watchFiles',
     };
 
-    if(this.req['method'] === "POST") {
+    if (this.req['method'] === "POST") {
         if (this.request.body['cmd'] === 'run') {
             this.app.gazeWather.add(this.request.body['file']);
             this.app.watchFilesMap.set(this.request.body['file'], this.request.body['renderProtocol']);
