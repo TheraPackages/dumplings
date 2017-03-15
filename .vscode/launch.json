@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "start egg",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/index.js",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": [
+        "--debug"
+      ],
+      "port": 5859
+    },
+    {
+      "name": "attach worker",
+      "type": "node",
+      "request": "attach",
+      "port": 5858
+    },
+    {
+      "name": "attach agent",
+      "type": "node",
+      "request": "attach",
+      "port": 5856
+    }
+  ],
+  "compounds": [
+    {
+      "name": "egg debug",
+      "configurations": ["start egg", "attach worker", "attach agent"]
+    }
+  ]
+}
