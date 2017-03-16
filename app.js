@@ -16,10 +16,10 @@ const          weex = require('weex-transformer');
 let webSocketServer = require('websocket').server;//https://github.com/theturtle32/WebSocket-Node
 let            Gaze = require('gaze').Gaze;       //https://github.com/shama/gaze
 
-let createOreoMessageObject = require('./app/model/OreoMessageModel')
-let createMockMessageObject = require('./app/model/MockMessageModel')
-let       connectClientPool = require('./app/model/connectClientPool')
-let                  helper = require('./app/model/DumplingsHelper')
+let createOreoMessageObject = require('./app/model/dp-oreomessage')
+let createMockMessageObject = require('./app/model/dp-mockmessage')
+let       connectClientPool = require('./app/model/dp-connectclientpool')
+let                  helper = require('./app/model/dp-helper')
 let           newestMessage = "";
 let                 theraConnect;
 

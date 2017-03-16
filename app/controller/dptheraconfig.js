@@ -24,7 +24,7 @@
 'use strict'
 
 const fs = require('fs')
-const createMockMessageObject = require('../model/MockMessageModel')
+const createMockMessageObject = require('../model/dp-mockmessage')
 const TRANSFORM_PATH = "transformPath" // store js file path
 
 module.exports = function* () {
