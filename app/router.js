@@ -10,15 +10,14 @@
 
 module.exports = function (app) {
   /*GET method*/
-  app.get('/', app.controller.home);
-  app.get('/iOSSimluatorList', app.controller.iOSSimluator)
-  app.get('/watchFiles', app.controller.watchFiles)
-  app.get('/connectClients', app.controller.connectClients)
-  app.get('/ipAddressPort', app.controller.ipAddressPort)
-  app.get('/removeMockConfig', app.controller.removeMockConfig)
-
+  app.get('/', app.controller.home)
+  app.get('/watchFiles', app.controller.dpwatchfiles)
+  app.get('/ipAddressPort', app.controller.dpipaddressport)
+  app.get('/connectClients', app.controller.dpconnectclients)
+  app.get('/iOSSimulatorList', app.controller.dpiossimulator)
+  app.get('/removeMockConfig', app.controller.dpremovemockconfig)
 
   /*POST method*/
-  app.post('/watchFiles', app.controller.watchFiles);
-  app.post('/theraConfig', app.controller.theraConfig);
+  app.post('/watchFiles', app.controller.dpwatchfiles);
+  app.post('/theraConfig', app.controller.dptheraconfig);
 };

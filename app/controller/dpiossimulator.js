@@ -8,7 +8,7 @@
 let shprocess = require('child_process');
 module.exports = function* () {
     const result = {
-        title: 'iOS',
+        title: 'ios simulator list',
     };
     this.response.type = 'application/json';
     this.response.body = shprocess.execSync('xcrun simctl list --json devices')

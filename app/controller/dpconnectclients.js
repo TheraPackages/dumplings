@@ -8,7 +8,7 @@
 
 module.exports = function* () {
     const result = {
-        title: 'connectClients',
+        title: 'connected clients',
     };
 
 
