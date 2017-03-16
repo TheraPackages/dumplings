@@ -18,6 +18,6 @@ module.exports = function (app) {
   app.get('/removeMockConfig', app.controller.dpremovemockconfig)
 
   /*POST method*/
-  app.post('/watchFiles', app.controller.dpwatchfiles);
-  app.post('/theraConfig', app.controller.dptheraconfig);
+  app.post('/watchFiles', app.controller.dpwatchfiles)
+  app.post('/theraConfig', app.controller.dptheraconfig)
 };
