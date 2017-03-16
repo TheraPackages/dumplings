@@ -35,7 +35,7 @@ function filterLogs(logs, logLevel) {
     })
 }
 
-let createOreoMessageObject = function (type, template, logs, name, bundleUrl) {
+let createOreoMessage = function (type, template, logs, name, bundleUrl) {
     const model = {
         'message': message,
         'data': {
@@ -54,4 +54,4 @@ let createOreoMessageObject = function (type, template, logs, name, bundleUrl) {
     return model;
 };
 
-module.exports = createOreoMessageObject;
+module.exports = createOreoMessage
