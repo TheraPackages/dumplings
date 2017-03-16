@@ -12,7 +12,6 @@
 
 'use strict'
 const            fs = require('fs');
-const          path = require('path');
 const          weex = require('weex-transformer');
 let webSocketServer = require('websocket').server;//https://github.com/theturtle32/WebSocket-Node
 let            Gaze = require('gaze').Gaze;       //https://github.com/shama/gaze
