@@ -17,10 +17,11 @@ let createConnectClient = function (req) {
 const MESSAGE_VALUE_SERVER = "preview-server";
 
 connectClientPool.clients = [];
+connectClientPool.message = '';
 connectClientPool.theraConnect;
 connectClientPool.activeClient; // Currently active client who can post message to console panel and be debugged.
 
-connectClientPool.addNewClient = function (req, message) {
+connectClientPool.addNewClient = function (req) {
   var headers = req.httpRequest.headers;
   if (req.httpRequest.headers['from'] === 'thera' || (headers['user-agent'] || '').indexOf('Atom') >= 0) {
 
@@ -35,7 +36,7 @@ connectClientPool.addNewClient = function (req, message) {
     // Choose one client to be activated.
     this.selectActiveDevice(null, newClient);
     // update new template
-    newClient['connect'].sendUTF(message);
+    newClient['connect'].sendUTF(this.message);
     // Push debugger server address to newly connected client.
     if (this.theraConnect && this.theraConnect.debugServer) {
       console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
@@ -164,6 +165,8 @@ connectClientPool.allClientHeaders = function () {
 }
 
 connectClientPool.sendAllClientMessage = function (message) {
+  this.message = message
+  console.log(message)
   this.checkClientlive();
   this.clients.forEach(function (client) {
     client['connect'].sendUTF(message);
