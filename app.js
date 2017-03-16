@@ -15,7 +15,7 @@ const fs = require('fs');
 let Gaze = require('gaze').Gaze;                    //https://github.com/shama/gaze
 let webSocketServer = require('websocket').server;  //https://github.com/theturtle32/WebSocket-Node
 
-let clientPool  = require('./app/model/dp-connectclientpool')
+let clientPool = require('./app/model/dp-connectclientpool')
 let WeexTransformHelper = require('./app/model/dp-weexhelper')
 let createMockMessageObject = require('./app/model/dp-mockmessage')
 
@@ -43,7 +43,7 @@ module.exports = function (app) {
 
     let gaze = new Gaze([], { 'interval': 1, 'mode': 'watch', 'debounceDelay': 1000 });
     gaze.on('changed', function (filepath) {
-        transformer.transform(filepath,app.clientPool)
+        transformer.transform(filepath, app.clientPool)
         fs.readFile(filepath, 'utf8', function (err, data) {
             if (err) throw err;
             // watch mock data file
