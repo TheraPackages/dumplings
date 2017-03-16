@@ -1,5 +1,5 @@
 'use strict'
-let ipAddress = require('./hostNetworkInfo').getHostIP();
+let ipAddress = require('./hostnetworkinfo').getHostIP();
 let genQr = require('./genqr');
 let Jimp = require('jimp');// https://github.com/oliver-moran/jimp
 
