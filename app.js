@@ -32,6 +32,7 @@ module.exports = function (app) {
         })
     })
 
+    const transformer = new WeexTransformHelper()
     // map key:filePath value:renderProtocol(weex/weapp)
     app.watchFilesMap = new Map();
     // map key:filePath value:MockMessageModel
@@ -39,7 +40,6 @@ module.exports = function (app) {
     // connectClientPool
     app.clientPool = clientPool;
 
-    const transformer = new WeexTransformHelper()
 
     let gaze = new Gaze([], { 'interval': 1, 'mode': 'watch', 'debounceDelay': 1000 });
     gaze.on('changed', function (filepath) {
