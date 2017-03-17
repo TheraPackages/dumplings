@@ -6,6 +6,7 @@
     "egg": "^1.0.0-rc.2",
     "egg-bin": "^2.2.3",
     "egg-view-nunjucks": "^2.0.0",
+    "fs-extra": "^2.1.2",
     "gaze": "^1.1.2",
     "websocket": "^1.0.24",
     "weex-builder": "^0.2.4",
