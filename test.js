@@ -1,21 +1,7 @@
 'use strict'
 
-const fs = require('fs')
+const path = require('path')
 
-class Test{
-    constructor(){
-        this._path = '/Users/guomiaoyou/.oreo/a.we'
-    }
+let filePath = '/Users/guomiaoyou/.oreo/a.vue'
 
-    tranform(){
-        fs.readFile(this._path,'utf8',this.readFile.bind(this))
-    }
-
-    readFile(err,data){
-        console.log(data);
-    }
-}
-
-let test = new Test()
-
-test.tranform()
+console.log(path.extname(filePath))
