@@ -1,5 +1,6 @@
 run/*
 logs/*
 .idea/*
+coverage/*
 node_modules/*
 
