@@ -21,3 +21,4 @@ $ open http://localhost:7000/
 * 使用`PORT=your_port_number node index.js` 指定端口运行，避免应用启动端口冲突
 * 若发生ip地址变更(切换了无线网络开关，重新分配了局域网ip),需要重新扫码完成预览客户端和服务端的绑定
 
+
