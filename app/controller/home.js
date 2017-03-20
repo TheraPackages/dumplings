@@ -6,11 +6,10 @@
  */
 
 'use strict';
-const path = require('path');
 
-module.exports = function* () {
-  const result = {
-    title: 'dumplings',
-  };
-  yield this.render('index.html', result);
+module.exports = function * () {
+    const result = {
+        title: 'dumplings',
+    };
+    yield this.render('index.html', result);
 };

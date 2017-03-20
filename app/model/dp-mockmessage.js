@@ -16,10 +16,10 @@ let createMockMessageObject = function (file, api, path, content) {
                     'file': file,
                     'api': api,
                     'path': path,
-                    'content': content
-                }
+                    'content': content,
+                },
             ],
-        }
+        },
     }
 
     return model;

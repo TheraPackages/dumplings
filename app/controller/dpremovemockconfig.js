@@ -2,7 +2,7 @@
  * Created by guomiaoyou on 2017/1/23.
  */
 
-module.exports = function* () {
+module.exports = function * () {
     const result = {
         title: 'removeMockConfig',
     };
@@ -12,7 +12,7 @@ module.exports = function* () {
         that.app.gazeWather.remove(key);
     })
 
-    this.app.connectClientPool.sendAllClientMessage(JSON.stringify({ "message": "removeMockConfig" }));
+    this.app.connectClientPool.sendAllClientMessage(JSON.stringify({ 'message': 'removeMockConfig' }));
 
     this.response.body = 'ok'
 };

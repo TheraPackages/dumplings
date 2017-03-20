@@ -25,9 +25,9 @@
 
 const fs = require('fs')
 const createMockMessageObject = require('../model/dp-mockmessage')
-const TRANSFORM_PATH = "transformPath" // store js file path
+const TRANSFORM_PATH = 'transformPath' // store js file path
 
-module.exports = function* () {
+module.exports = function * () {
     const result = {
         title: 'mockConfig',
     };
@@ -37,17 +37,17 @@ module.exports = function* () {
     })
 
     try {
-        if (this.req['method'] === "POST") {
-            let data = this.request.body['data']
-            this.app[TRANSFORM_PATH] = data['transformPath']
-            data['mock'].forEach(function (element) {
-                that.app.gazeWather.add(element['file'])
-                fs.readFile(element['file'], 'utf8', (error, data) => {
+        if (this.req.method === 'POST') {
+            let data = this.request.body.data
+            this.app[TRANSFORM_PATH] = data.transformPath
+            data.mock.forEach(function (element) {
+                that.app.gazeWather.add(element.file)
+                fs.readFile(element.file, 'utf8', (error, data) => {
                     if (error) {
                         console.log(error)
                     } else {
-                        var mockModel = createMockMessageObject(element['file'], element['api'], element['path'], data)
-                        that.app.mockfileMap.set(element['file'], mockModel)
+                        var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
+                        that.app.mockfileMap.set(element.file, mockModel)
                         that.app.connectClientPool.sendAllClientMessage(JSON.stringify(mockModel))
                     }
                 })

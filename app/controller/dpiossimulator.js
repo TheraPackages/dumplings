@@ -6,7 +6,7 @@
 'use strict'
 
 let shprocess = require('child_process');
-module.exports = function* () {
+module.exports = function * () {
     const result = {
         title: 'ios simulator list',
     };

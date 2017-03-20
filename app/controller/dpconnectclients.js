@@ -6,11 +6,10 @@
 'use strict'
 
 
-module.exports = function* () {
+module.exports = function * () {
     const result = {
         title: 'connected clients',
-    };
-
+    }
 
     this.response.body = JSON.stringify(this.app.connectClientPool.allClientHeaders());
 };

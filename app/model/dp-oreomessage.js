@@ -15,12 +15,13 @@
 'use strict'
 
 const message = 'oreo';
+
 /*
 *   向Preview Client只发送 Error 的weex logs
 *   若logs不为数组(可能是transform抛出的异常对象) 则直接返回，不过滤
 * */
-function filterLogs(logs, logLevel) {
-    if (!(logs instanceof Array)) return logs;
+function filterLogs (logs, logLevel) {
+    if (!(logs instanceof Array)) {return logs;}
 
     logLevel = logLevel ? logLevel.toUpperCase() : 'NOTE'
     var logLevels = ['OFF', 'ERROR', 'WARNING', 'NOTE']
@@ -34,8 +35,9 @@ function filterLogs(logs, logLevel) {
         return curLevel <= specifyLevel
     })
 }
+
 /**
- * 
+ *
  * @param string type     监听文件对应的渲染方式，目前仅支持 weex
  * @param string template 文件转化之后的js模板内容
  * @param array logs      文件转化产生的日志
@@ -43,7 +45,7 @@ function filterLogs(logs, logLevel) {
  * @param string bundleUrl 转出文件路径(/xx/x.js)
  * @param string fileName  原文件名(.we/.vue)
  */
-let createOreoMessage = function (type, template, logs, name, bundleUrl,fileName) {
+let createOreoMessage = function (type, template, logs, name, bundleUrl, fileName) {
     const model = {
         'message': message,
         'data': {
@@ -54,10 +56,10 @@ let createOreoMessage = function (type, template, logs, name, bundleUrl,fileName
                     'type': type,
                     'template': template,
                     'logs': filterLogs(logs, 'ERROR'),
-                    'fileName':fileName
-                }
+                    'fileName': fileName,
+                },
             ],
-        }
+        },
     }
 
     return model;

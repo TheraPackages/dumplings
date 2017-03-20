@@ -7,7 +7,7 @@
 let getHostIP = require('../public/hostnetworkinfo').getHostIP;
 
 
-module.exports = function* () {
+module.exports = function * () {
     const result = {
         title: 'ipAddressPort',
     };
