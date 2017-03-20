@@ -65,7 +65,7 @@ class WeexTransformHelper {
             this._clientPool.sendTransformSuccessNotify(content.logs)
             let name = (fileName || "").replace(/\.we$/, '.js')
             let bundleUrl = (filepath || "").replace(/\.we$/, '.js')
-            let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl))
+            let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl,fileName))
             this._clientPool.sendAllClientMessage(oreoMessage)
         }
     }
