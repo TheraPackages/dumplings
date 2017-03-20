@@ -1,5 +1,5 @@
 # dumplings
-
+[![Build Status](https://travis-ci.org/TheraPackages/dumplings.svg?branch=master)](https://travis-ci.org/TheraPackages/dumplings)
 
 dumplings 是基于阿里开源node框架 [egg](https://eggjs.org/) 开发，运行环境依赖于`node 6.0.0` 以上版本。
 
