@@ -4,7 +4,7 @@
 
 'use strict'
 
-let getHostIP = require('../public/js/qrcode/hostnetworkinfo').getHostIP;
+let getHostIP = require('../public/hostnetworkinfo').getHostIP;
 
 
 module.exports = function* () {
