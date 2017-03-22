@@ -44,7 +44,7 @@ module.exports = function (app) {
 
     let gaze = new Gaze([], { 'interval': 1, 'mode': 'watch', 'debounceDelay': 1000 });
     gaze.on('changed', function (filepath) {
-        transformer.transform(filepath, app.clientPool, app.theraConfig.transformPath)
+        transformer.transform(filepath, app.clientPool, app.theraConfig.get('transformPath'))
         fs.readFile(filepath, 'utf8', function (err, data) {
             if (err) {throw err;}
             // watch mock data file

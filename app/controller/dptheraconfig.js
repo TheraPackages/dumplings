@@ -9,6 +9,23 @@ const fs = require('fs')
 const createMockMessageObject = require('../model/dp-mockmessage')
 const TRANSFORM_PATH = 'transformPath' // store js file path
 
+
+function objToStrMap(objc){
+    let strMap = new Map();
+    for( let k of Object.keys(objc)){
+        strMap.set(k,objc[k]);
+    }
+    return strMap;
+}
+
+function strMapToObj(strMap){
+    let obj = Object.create(null);
+    for ( let [k,v] of strMap ){
+        obj[k] = v;
+    }
+    return obj;
+}
+
 module.exports = function * () {
     const result = {
         title: 'mockConfig',
@@ -21,7 +38,7 @@ module.exports = function * () {
         })
 
         let data = this.request.body.data
-        this.app.theraConfig = data
+        this.app.theraConfig = objToStrMap(data)
         // 1. watch main.we/main.vue
         this.app.gazeWather.add(data.main)
         // 2. watch mock file
@@ -38,7 +55,7 @@ module.exports = function * () {
             })
         })
     }
-    this.response.body = JSON.stringify(this.app.theraConfig);
+    this.response.body = JSON.stringify(strMapToObj(this.app.theraConfig));
 };
 
 
