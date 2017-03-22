@@ -7,20 +7,19 @@
 
 const fs = require('fs')
 const createMockMessageObject = require('../model/dp-mockmessage')
-const TRANSFORM_PATH = 'transformPath' // store js file path
 
 
-function objToStrMap(objc){
+function objToStrMap (objc) {
     let strMap = new Map();
-    for( let k of Object.keys(objc)){
-        strMap.set(k,objc[k]);
+    for (let k of Object.keys(objc)) {
+        strMap.set(k, objc[k]);
     }
     return strMap;
 }
 
-function strMapToObj(strMap){
+function strMapToObj (strMap) {
     let obj = Object.create(null);
-    for ( let [k,v] of strMap ){
+    for (let [k, v] of strMap) {
         obj[k] = v;
     }
     return obj;
