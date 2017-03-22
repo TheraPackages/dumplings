@@ -34,16 +34,17 @@ module.exports = function (app) {
 
     const transformer = new WeexTransformHelper()
     // map key:filePath value:renderProtocol(weex/weapp)
-    app.watchFilesMap = new Map();
+    // app.watchFilesMap = new Map();
     // map key:filePath value:MockMessageModel
     app.mockfileMap = new Map();
-    // connectClientPool
+    // clientPool
     app.clientPool = clientPool;
+    app.theraConfig = new Map();
 
 
     let gaze = new Gaze([], { 'interval': 1, 'mode': 'watch', 'debounceDelay': 1000 });
     gaze.on('changed', function (filepath) {
-        transformer.transform(filepath, app.clientPool)
+        transformer.transform(filepath, app.clientPool, app.theraConfig.transformPath)
         fs.readFile(filepath, 'utf8', function (err, data) {
             if (err) {throw err;}
             // watch mock data file

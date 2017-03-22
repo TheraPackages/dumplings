@@ -12,7 +12,7 @@ module.exports = function * () {
         that.app.gazeWather.remove(key);
     })
 
-    this.app.connectClientPool.sendAllClientMessage(JSON.stringify({ 'message': 'removeMockConfig' }));
+    this.app.clientPool.sendAllClientMessage(JSON.stringify({ 'message': 'removeMockConfig' }));
 
     this.response.body = 'ok'
 };

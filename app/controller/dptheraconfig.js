@@ -1,27 +1,9 @@
 /**
  * Created by guomiaoyou on 2017/1/21.
+ * https://github.com/TheraPackages/dumplings/wiki/%E6%94%AF%E6%8C%81Thera-%E5%B7%A5%E7%A8%8B%E9%85%8D%E7%BD%AE
  */
 
-/**
-
- {
-  "message" : "theraConfig",
-  "version": "0.1.0",
-  "data" : {
-    "main": "${workspaceRoot}/page.we",
-    "transformPath": "${workspaceRoot}/transform",
-    "mock" : [
-      {
-        "api" : "mtop.tmall.search.searchproduct", // MTOP API
-        "file" : "\/Users\/guomiaoyou\/.oreo\/mockData.json", // 存放mock数据的文件
-        "path" : "data.data.cmAboveResult.modules" // mock数据挂载的API路径节点。注意前面的data是必带的
-      }
-      ]
-    }
-  }
- */
-
-'use strict'
+'use strict';
 
 const fs = require('fs')
 const createMockMessageObject = require('../model/dp-mockmessage')
@@ -31,33 +13,32 @@ module.exports = function * () {
     const result = {
         title: 'mockConfig',
     };
-    var that = this;
-    this.app.mockfileMap.forEach((val, key, map) => {
-        that.app.gazeWather.remove(key);
-    })
 
-    try {
-        if (this.req.method === 'POST') {
-            let data = this.request.body.data
-            this.app[TRANSFORM_PATH] = data.transformPath
-            data.mock.forEach(function (element) {
-                that.app.gazeWather.add(element.file)
-                fs.readFile(element.file, 'utf8', (error, data) => {
-                    if (error) {
-                        console.log(error)
-                    } else {
-                        var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
-                        that.app.mockfileMap.set(element.file, mockModel)
-                        that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
-                    }
-                })
+    if (this.req.method === 'POST') {
+        var that = this;
+        this.app.mockfileMap.forEach((val, key, map) => {
+            that.app.gazeWather.remove(key);
+        })
+
+        let data = this.request.body.data
+        this.app.theraConfig = data
+        // 1. watch main.we/main.vue
+        this.app.gazeWather.add(data.main)
+        // 2. watch mock file
+        data.mock.forEach(function (element) {
+            that.app.gazeWather.add(element.file)
+            fs.readFile(element.file, 'utf8', (error, data) => {
+                if (error) {
+                    console.log(error)
+                } else {
+                    var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
+                    that.app.mockfileMap.set(element.file, mockModel)
+                    that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
+                }
             })
-        }
-    } catch (err) {
-        console.log(err);
+        })
     }
-
-
-    this.response.body = 'ok'
+    this.response.body = JSON.stringify(this.app.theraConfig);
 };
+
 

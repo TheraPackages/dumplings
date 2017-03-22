@@ -11,5 +11,5 @@ module.exports = function * () {
         title: 'connected clients',
     }
 
-    this.response.body = JSON.stringify(this.app.connectClientPool.allClientHeaders());
+    this.response.body = JSON.stringify(this.app.clientPool.allClientHeaders());
 };

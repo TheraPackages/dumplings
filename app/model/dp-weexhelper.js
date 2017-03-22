@@ -9,7 +9,7 @@
 
 const fs = require('fs')
 const path = require('path')
-// const helper = require('./dp-helper')
+const helper = require('./dp-helper')
 const builder = require('weex-builder')
 const transformer = require('weex-transformer')
 const createOreoMessage = require('./dp-oreomessage')
@@ -21,39 +21,40 @@ class WeexTransformHelper {
         this._clientPool = undefined;
     }
 
-    transform (filepath, clientPool) {
+    transform (filePath, clientPool, savePath) {
         this._clientPool = clientPool
+        savePath = savePath === undefined ? path.dirname(filePath) : savePath;
 
-        switch (path.extname(filepath)) {
+        switch (path.extname(filePath)) {
             case '.we':
-                this.weTransformToJS(filepath)
+                this.weTransformToJS(filePath, savePath)
                 break
             case '.vue':
-                this.vueTransformToJS(filepath)
+                this.vueTransformToJS(filePath, savePath)
                 break
             default:
                 break
         }
     }
 
-    weTransformToJS (filepath) {
-        fs.readFile(filepath, 'utf8', this.readWefile.bind(this, filepath))
+    weTransformToJS (filePath, savePath) {
+        fs.readFile(filePath, 'utf8', this.readWefile.bind(this, filePath, savePath))
     }
 
-    vueTransformToJS (filepath) {
-        this._vueTransformer.build(filepath, path.dirname(filepath), {}, this.vueBuildJsFileCallBack.bind(this))
+    vueTransformToJS (filePath, savePath) {
+        this._vueTransformer.build(filePath, savePath, {}, this.vueBuildJsFileCallBack.bind(this, savePath))
     }
 
-    vueBuildJsFileCallBack (errorString, result, jsonStats) {
-        if (result.length > 0) {fs.readFile(result[0].to, 'utf8', this.readVuefile.bind(this, result[0].to))}
+    vueBuildJsFileCallBack (savePath, errorString, result, jsonStats) {
+        if (result.length > 0) {fs.readFile(result[0].to, 'utf8', this.readVuefile.bind(this, result[0].to, savePath))}
     }
 
     // read .we file content
-    readWefile (filepath, err, data) {
+    readWefile (filePath, savePath, err, data) {
         if (err) {
             this._clientPool.sendTransformFailedNotify(err)
         } else {
-            const arr = filepath.split('\/')
+            const arr = filePath.split('\/')
             const fileName = arr.length > 1 ? arr[arr.length - 1] : 'unkown'
             let content
             try {
@@ -64,23 +65,25 @@ class WeexTransformHelper {
 
             this._clientPool.sendTransformSuccessNotify(content.logs)
             let name = (fileName || '').replace(/\.we$/, '.js')
-            let bundleUrl = (filepath || '').replace(/\.we$/, '.js')
+            let bundleUrl = (filePath || '').replace(/\.we$/, '.js')
             let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl, fileName))
             this._clientPool.sendAllClientMessage(oreoMessage)
+            helper.saveJSFile(data, content.result, name, savePath)
         }
     }
 
     // read .vue file content
-    readVuefile (filepath, err, data) {
+    readVuefile (filePath, savePath, err, data) {
         if (err) {
             this._clientPool.sendTransformFailedNotify(err)
         } else {
-            const arr = filepath.split('\/')
+            const arr = filePath.split('\/')
             const fileName = arr.length > 1 ? arr[arr.length - 1] : 'unkown'
             this._clientPool.sendTransformSuccessNotify([])
-
-            let oreoMessage = JSON.stringify(createOreoMessage('weex', data, [], fileName, filepath))
+            let oreoMessage = JSON.stringify(createOreoMessage('weex', data, [], fileName, filePath))
             this._clientPool.sendAllClientMessage(oreoMessage)
+
+            // helper.saveJSFile('',data,fileName,savePath)
         }
     }
 }

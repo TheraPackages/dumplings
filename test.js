@@ -4,4 +4,4 @@ const path = require('path')
 
 let filePath = '/Users/guomiaoyou/.oreo/a.vue'
 
-console.log(path.extname(filePath))
+console.log(path.dirname(filePath))
