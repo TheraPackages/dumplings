@@ -48,7 +48,7 @@ module.exports = function * () {
                     } else {
                         var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
                         that.app.mockfileMap.set(element.file, mockModel)
-                        that.app.connectClientPool.sendAllClientMessage(JSON.stringify(mockModel))
+                        that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
                     }
                 })
             })
