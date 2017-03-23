@@ -55,18 +55,18 @@ class WeexTransformHelper {
             this._clientPool.sendTransformFailedNotify(err)
         } else {
             const arr = filePath.split('\/')
-            const fileName = arr.length > 1 ? arr[arr.length - 1] : 'unkown'
+            const weFileName = arr.length > 1 ? arr[arr.length - 1] : 'unkown'
             let content
             try {
-                content = this._weTransformer.transform(fileName, data, '.')
+                content = this._weTransformer.transform(weFileName, data, '.')
             } catch (err) {
                 this._clientPool.sendTransformFailedNotify(err)
             }
 
             this._clientPool.sendTransformSuccessNotify(content.logs)
-            let name = (fileName || '').replace(/\.we$/, '.js')
-            let bundleUrl = (filePath || '').replace(/\.we$/, '.js')
-            let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl, fileName))
+            let name = (weFileName || '').replace(/\.we$/, '.js')
+            let bundleUrl = path.join(savePath, name);
+            let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl, weFileName))
             this._clientPool.sendAllClientMessage(oreoMessage)
             helper.saveJSFile(data, content.result, name, savePath)
         }
@@ -82,8 +82,6 @@ class WeexTransformHelper {
             this._clientPool.sendTransformSuccessNotify([])
             let oreoMessage = JSON.stringify(createOreoMessage('weex', data, [], fileName, filePath))
             this._clientPool.sendAllClientMessage(oreoMessage)
-
-            // helper.saveJSFile('',data,fileName,savePath)
         }
     }
 }
