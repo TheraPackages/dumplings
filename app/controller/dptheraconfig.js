@@ -41,7 +41,7 @@ module.exports = function * () {
         // 1. watch main.we/main.vue
         this.app.gazeWather.add(data.main)
         // 2. watch mock file
-        data.mock.forEach(function (element) {
+        if(data.hasOwnProperty('mock') && data.mock instanceof array ) data.mock.forEach(function (element) {
             that.app.gazeWather.add(element.file)
             fs.readFile(element.file, 'utf8', (error, data) => {
                 if (error) {
