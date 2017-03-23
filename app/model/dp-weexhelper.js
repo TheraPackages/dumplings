@@ -42,7 +42,12 @@ class WeexTransformHelper {
     }
 
     vueTransformToJS (filePath, savePath) {
-        this._vueTransformer.build(filePath, savePath, {}, this.vueBuildJsFileCallBack.bind(this, savePath))
+        try {
+            this._vueTransformer.build(filePath, savePath, {}, this.vueBuildJsFileCallBack.bind(this, savePath))
+        } catch (err){
+            console.log('vue build err ' + err)
+            this._clientPool.sendTransformFailedNotify(err)
+        }
     }
 
     vueBuildJsFileCallBack (savePath, errorString, result, jsonStats) {
@@ -59,16 +64,16 @@ class WeexTransformHelper {
             let content
             try {
                 content = this._weTransformer.transform(weFileName, data, '.')
+                this._clientPool.sendTransformSuccessNotify(content.logs)
+                let name = (weFileName || '').replace(/\.we$/, '.js')
+                let bundleUrl = path.join(savePath, name);
+                let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl, weFileName))
+                this._clientPool.sendAllClientMessage(oreoMessage)
+                helper.saveJSFile(data, content.result, name, savePath)
             } catch (err) {
+                console.log('weex transform err ' + err)
                 this._clientPool.sendTransformFailedNotify(err)
             }
-
-            this._clientPool.sendTransformSuccessNotify(content.logs)
-            let name = (weFileName || '').replace(/\.we$/, '.js')
-            let bundleUrl = path.join(savePath, name);
-            let oreoMessage = JSON.stringify(createOreoMessage('weex', content.result, content.logs, name, bundleUrl, weFileName))
-            this._clientPool.sendAllClientMessage(oreoMessage)
-            helper.saveJSFile(data, content.result, name, savePath)
         }
     }
 
