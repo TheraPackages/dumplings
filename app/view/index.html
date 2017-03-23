@@ -11,12 +11,23 @@
 
 <script>
   var t = jQuery;
-  console.log(jQuery);
   $.ajax({
     url: "/ipAddressPort"
   }).done(function (data) {
     t('#qrcode').qrcode(data);
-    console.log(jQuery);
   });
+</script>
 
+<div class="jumbotron">
+  <h2>使用天猫/手淘客户端 扫描下面的二维码即可开始浏览</h2>
+</div>
+<div id="tmallqrcode"></div>
+
+<script>
+  var t = jQuery;
+  $.ajax({
+    url: "/tmallpreview"
+  }).done(function (data) {
+    t('#tmallqrcode').qrcode(data);
+  });
 </script>

@@ -12,6 +12,7 @@ module.exports = function (app) {
   /* GET method*/
     app.get('/', app.controller.home)
     app.get('/theraConfig', app.controller.dptheraconfig)
+    app.get('/tmallpreview',app.controller.dptmallpreviewpage)
     app.get('/ipAddressPort', app.controller.dpipaddressport)
     app.get('/connectClients', app.controller.dpconnectclients)
     app.get('/iOSSimulatorList', app.controller.dpiossimulator)
