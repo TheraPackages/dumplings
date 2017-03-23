@@ -2,6 +2,7 @@
 
 const path = require('path')
 
-let filePath = '/Users/guomiaoyou/.oreo/a.vue'
+let filePath = '/Users/guomiaoyou/.oreo'
+let name = 'main.js'
 
-console.log(path.dirname(filePath))
+console.log(path.join(filePath,name))
