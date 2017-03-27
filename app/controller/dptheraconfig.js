@@ -8,7 +8,6 @@
 const fs = require('fs')
 const createMockMessageObject = require('../model/dp-mockmessage')
 
-
 function objToStrMap (objc) {
     let strMap = new Map();
     for (let k of Object.keys(objc)) {
@@ -39,7 +38,11 @@ module.exports = function * () {
         let data = this.request.body.data
         this.app.theraConfig = objToStrMap(data)
         // 1. watch main.we/main.vue
-        this.app.gazeWather.add(data.main)
+        if(data.hasOwnProperty('main')){
+            this.app.gazeWather.add(data.main)
+            this.app.transformer.transform(data.main, this.app.clientPool, this.app.theraConfig.get('transformPath'))
+        }
+
         // 2. watch mock file
         if(data.hasOwnProperty('mock') && data.mock instanceof array ) data.mock.forEach(function (element) {
             that.app.gazeWather.add(element.file)
