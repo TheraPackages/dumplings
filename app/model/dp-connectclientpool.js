@@ -15,7 +15,7 @@ let createConnectClient = function (req) {
 const MESSAGE_VALUE_SERVER = 'preview-server';
 
 connectClientPool.clients = [];
-connectClientPool.message = '';
+connectClientPool._oreomessage = '';
 connectClientPool.theraConnect;
 connectClientPool.activeClient; // Currently active client who can post message to console panel and be debugged.
 
@@ -31,11 +31,11 @@ connectClientPool.addNewClient = function (req) {
         this.clients.push(newClient);
         console.log('Accepted a new connection. Pool size = ' + this.size());
 
-    // Choose one client to be activated.
+        // Choose one client to be activated.
         this.selectActiveDevice(null, newClient);
-    // update new template
-        newClient.connect.sendUTF(this.message);
-    // Push debugger server address to newly connected client.
+        // update new template
+        newClient.connect.sendUTF(this._oreomessage);
+        // Push debugger server address to newly connected client.
         if (this.theraConnect && this.theraConnect.debugServer) {
             console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
             newClient.connect.sendUTF(this.theraConnect.debugServer);
@@ -162,9 +162,11 @@ connectClientPool.allClientHeaders = function () {
     return headers;
 }
 
+const OREOMESSAGE_PRE = '{"message":"oreo"'
 connectClientPool.sendAllClientMessage = function (message) {
-    this.message = message
-    console.log(message)
+    if (message.startsWith(OREOMESSAGE_PRE)) {
+        this._oreomessage = message;
+    }
     this.checkClientlive();
     this.clients.forEach(function (client) {
         client.connect.sendUTF(message);

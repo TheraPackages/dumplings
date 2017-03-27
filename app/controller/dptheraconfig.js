@@ -39,6 +39,10 @@ module.exports = function * () {
         this.app.theraConfig = objToStrMap(data)
         // 1. watch main.we/main.vue
         if (data.hasOwnProperty('main')) {
+            const w = this.app.gazeWather.watched()
+            for (let k of Object.keys(w)) {
+                this.app.gazeWather.remove(k)
+            }
             this.app.gazeWather.add(data.main)
             this.app.transformer.transform(data.main, this.app.clientPool, this.app.theraConfig.get('transformPath'))
         }
