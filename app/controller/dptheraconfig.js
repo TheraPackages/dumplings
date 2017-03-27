@@ -38,24 +38,26 @@ module.exports = function * () {
         let data = this.request.body.data
         this.app.theraConfig = objToStrMap(data)
         // 1. watch main.we/main.vue
-        if(data.hasOwnProperty('main')){
+        if (data.hasOwnProperty('main')) {
             this.app.gazeWather.add(data.main)
             this.app.transformer.transform(data.main, this.app.clientPool, this.app.theraConfig.get('transformPath'))
         }
 
         // 2. watch mock file
-        if(data.hasOwnProperty('mock') && data.mock instanceof array ) data.mock.forEach(function (element) {
-            that.app.gazeWather.add(element.file)
-            fs.readFile(element.file, 'utf8', (error, data) => {
-                if (error) {
-                    console.log(error)
-                } else {
-                    var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
-                    that.app.mockfileMap.set(element.file, mockModel)
-                    that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
-                }
+        if (data.hasOwnProperty('mock') && data.mock instanceof Array) {
+            data.mock.forEach(function (element) {
+                that.app.gazeWather.add(element.file)
+                fs.readFile(element.file, 'utf8', (error, data) => {
+                    if (error) {
+                        console.log(error)
+                    } else {
+                        var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
+                        that.app.mockfileMap.set(element.file, mockModel)
+                        that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
+                    }
+                })
             })
-        })
+        }
     }
     this.response.body = JSON.stringify(strMapToObj(this.app.theraConfig));
 };

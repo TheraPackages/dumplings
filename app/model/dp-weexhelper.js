@@ -44,7 +44,7 @@ class WeexTransformHelper {
     vueTransformToJS (filePath, savePath) {
         try {
             this._vueTransformer.build(filePath, savePath, {}, this.vueBuildJsFileCallBack.bind(this, savePath))
-        } catch (err){
+        } catch (err) {
             console.log('vue build err ' + err)
             this._clientPool.sendTransformFailedNotify(err)
         }

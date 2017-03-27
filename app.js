@@ -32,7 +32,7 @@ module.exports = function (app) {
         })
     })
 
-    // config 
+    // config
     app.mockfileMap = new Map();
     app.theraConfig = new Map();
     // register responder
