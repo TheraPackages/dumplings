@@ -1,6 +1,6 @@
 {
   "name": "dumplings",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Thera IDE Server",
   "dependencies": {
     "egg": "^1.0.0-rc.2",
