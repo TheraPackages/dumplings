@@ -164,8 +164,8 @@ connectClientPool.allClientHeaders = function () {
 
 const OREOMESSAGE_PRE = '{"message":"oreo"'
 connectClientPool.sendAllClientMessage = function (message) {
-    if (message.startsWith(OREOMESSAGE_PRE)) {
-        this._oreomessage = message;
+    if (msg instanceof String && message.startsWith(OREOMESSAGE_PRE)) {
+        this._oreomessage = message
     }
     this.checkClientlive();
     this.clients.forEach(function (client) {
