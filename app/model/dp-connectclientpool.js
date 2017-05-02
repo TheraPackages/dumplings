@@ -23,16 +23,16 @@ connectClientPool.theraConnect;
 connectClientPool.activeClient; // Currently active client who can post message to console panel and be debugged.
 
 
-connectClientPool.clients.on('change',(params) => {
-    let type = params['type'];
-    if(type === 'add' || type === 'alter' || type == 'remove'){
+connectClientPool.clients.on('change', (params) => {
+    let type = params.type;
+    if (type === 'add' || type === 'alter' || type === 'remove') {
         let headers = [];
         connectClientPool.clients.forEach(function (element) {
             headers.push(element.headers);
         })
         let msg = {
-            data : headers,
-            message : ON_CLIENTPOOL_SIZECHANGE
+            data: headers,
+            message: ON_CLIENTPOOL_SIZECHANGE,
         }
 
         console.log(msg);
@@ -62,7 +62,7 @@ connectClientPool.addNewClient = function (req) {
             newClient.connect.sendUTF(this.theraConnect.debugServer);
         }
         newClient.connect.on('message', this.onClientMessage.bind(this, newClient));
-        newClient.connect.on('close', this.onClientDisconnected.bind(this, newClient));        
+        newClient.connect.on('close', this.onClientDisconnected.bind(this, newClient));
     }
 }
 
