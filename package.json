@@ -3,6 +3,7 @@
   "version": "2.0.5",
   "description": "Thera IDE Server",
   "dependencies": {
+    "array-events": "^1.0.0",
     "egg": "^1.0.0-rc.2",
     "egg-bin": "^2.2.3",
     "egg-view-nunjucks": "^2.0.0",
