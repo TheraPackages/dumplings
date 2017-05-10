@@ -20,11 +20,11 @@ DumplingsHelper.saveJSFile = function (originData, content, fileName, filePath) 
     const newpath = filePath + '\/' + fileName;
 
     fs.ensureDirSync(filePath, (err) => {
-        if (err) {console.log(err);}
+        if (err) {console.error(err);}
     });
 
     fs.writeFile(newpath, newContent, (err) => {
-        if (err) {console.log(err)}
+        if (err) {console.error(err)}
     })
 
     return true;

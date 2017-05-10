@@ -45,7 +45,7 @@ class WeexTransformHelper {
         try {
             this._vueTransformer.build(filePath, savePath, {}, this.vueBuildJsFileCallBack.bind(this, savePath))
         } catch (err) {
-            console.log('vue build err ' + err)
+            console.error('vue build err ' + err)
             this._clientPool.sendTransformFailedNotify(err)
         }
     }
@@ -71,7 +71,7 @@ class WeexTransformHelper {
                 this._clientPool.sendAllClientMessage(oreoMessage)
                 helper.saveJSFile(data, content.result, name, savePath)
             } catch (err) {
-                console.log('weex transform err ' + err)
+                console.error('weex transform err ' + err)
                 this._clientPool.sendTransformFailedNotify(err)
             }
         }

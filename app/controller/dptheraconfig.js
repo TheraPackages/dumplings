@@ -53,7 +53,7 @@ module.exports = function * () {
                 that.app.gazeWather.add(element.file)
                 fs.readFile(element.file, 'utf8', (error, data) => {
                     if (error) {
-                        console.log(error)
+                        console.error(error)
                     } else {
                         var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
                         that.app.mockfileMap.set(element.file, mockModel)
