@@ -51,7 +51,14 @@ class WeexTransformHelper {
     }
 
     vueBuildJsFileCallBack (savePath, errorString, result, jsonStats) {
-        if (result.length > 0) {fs.readFile(result[0].to, 'utf8', this.readVuefile.bind(this, result[0].to, savePath))}
+        if (errorString) {
+            console.error(errorString)
+            let oreoMessage = JSON.stringify(createOreoMessage('weex', '', errorString, '', '', path.parse(savePath).base))
+            this._clientPool.sendAllClientMessage(oreoMessage)
+            this._clientPool.sendTransformFailedNotify(errorString)
+        } else if (Array.isArray(result) && result.length > 0) {
+            fs.readFile(result[0].to, 'utf8', this.readVuefile.bind(this, result[0].to, savePath))
+        }
     }
 
     // read .we file content
@@ -82,10 +89,8 @@ class WeexTransformHelper {
         if (err) {
             this._clientPool.sendTransformFailedNotify(err)
         } else {
-            const arr = filePath.split('\/')
-            const fileName = arr.length > 1 ? arr[arr.length - 1] : 'unkown'
             this._clientPool.sendTransformSuccessNotify([])
-            let oreoMessage = JSON.stringify(createOreoMessage('weex', data, [], fileName, filePath))
+            let oreoMessage = JSON.stringify(createOreoMessage('weex', data, '', path.parse(filePath).base, filePath, path.parse(filePath).base))
             this._clientPool.sendAllClientMessage(oreoMessage)
         }
     }
