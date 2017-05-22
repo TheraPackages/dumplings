@@ -11,13 +11,16 @@ module.exports = function (app) {
 
   /* GET method*/
     app.get('/', app.controller.home)
+    app.get('/exit',app.controller.exit)
+    app.get('/knock',app.controller.knock)
+
     app.get('/theraConfig', app.controller.dptheraconfig)
     app.get('/tmallpreview', app.controller.dptmallpreviewpage)
     app.get('/ipAddressPort', app.controller.dpipaddressport)
     app.get('/connectClients', app.controller.dpconnectclients)
     app.get('/iOSSimulatorList', app.controller.dpiossimulator)
     app.get('/removeMockConfig', app.controller.dpremovemockconfig)
-
+    
   /* POST method*/
     app.post('/theraConfig', app.controller.dptheraconfig)
 };
