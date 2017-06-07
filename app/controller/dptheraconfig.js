@@ -6,7 +6,7 @@
 'use strict';
 
 const fs = require('fs')
-const createMockMessageObject = require('../model/dp-mockmessage')
+const mockMessageUtil = require('../model/dp-mockmessage')
 
 function objToStrMap (objc) {
     let strMap = new Map();
@@ -26,7 +26,7 @@ function strMapToObj (strMap) {
 
 module.exports = function * () {
     const result = {
-        title: 'mockConfig',
+        title: 'theraConfig',
     };
 
     if (this.req.method === 'POST') {
@@ -45,22 +45,6 @@ module.exports = function * () {
             }
             this.app.gazeWather.add(data.main)
             this.app.transformer.transform(data.main, this.app.clientPool, this.app.theraConfig.get('transformPath'))
-        }
-
-        // 2. watch mock file
-        if (data.hasOwnProperty('mock') && data.mock instanceof Array) {
-            data.mock.forEach(function (element) {
-                that.app.gazeWather.add(element.file)
-                fs.readFile(element.file, 'utf8', (error, data) => {
-                    if (error) {
-                        console.error(error)
-                    } else {
-                        var mockModel = createMockMessageObject(element.file, element.api, element.path, data)
-                        that.app.mockfileMap.set(element.file, mockModel)
-                        that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModel))
-                    }
-                })
-            })
         }
     }
     this.response.body = JSON.stringify(strMapToObj(this.app.theraConfig));

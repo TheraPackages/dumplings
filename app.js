@@ -17,7 +17,7 @@ let WebSocketServer = require('websocket').server;  // https://github.com/thetur
 
 let clientPool = require('./app/model/dp-connectclientpool')
 let WeexTransformHelper = require('./app/model/dp-weexhelper')
-let createMockMessageObject = require('./app/model/dp-mockmessage')
+let mockMessageUtil = require('./app/model/dp-mockmessage')
 
 
 module.exports = function (app) {
@@ -49,7 +49,7 @@ module.exports = function (app) {
                 var mockModel = app.mockfileMap.get(filepath)
                 mockModel.data.mockList.forEach((element) => {
                     if (filepath === element.file) {
-                        clientPool.sendAllClientMessage(JSON.stringify(createMockMessageObject(filepath, element.api, element.path, data)))
+                        clientPool.sendAllClientMessage(JSON.stringify(mockMessageUtil.createMockDataMessageObject(filepath, element.api, element.path, data)))
                     }
                 })
             }
