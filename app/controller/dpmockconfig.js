@@ -49,7 +49,7 @@ module.exports = function * () {
                 fs.readFile(element.file, 'utf8', (error, data) => {
                     if (error) {
                         console.error(error)
-                    } else {
+                    } else if(data){
                         var mockDataMsg = mockMessageUtil.createMockDataMessageObject(element.file, element.api, element.path, data)
                         that.app.mockfileMap.set(element.file, mockDataMsg)
                         that.app.clientPool.sendAllClientMessage(JSON.stringify(mockDataMsg))
