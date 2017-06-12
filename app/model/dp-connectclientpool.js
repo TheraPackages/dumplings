@@ -19,6 +19,9 @@ const ON_CLIENTPOOL_SIZECHANGE = 'poolSize-change';
 
 connectClientPool.clients = new EventedArray();
 connectClientPool._oreomessage = '';
+connectClientPool._mockModulesMesasage = '';
+connectClientPool._mockDataMessageMap = new Map();
+
 connectClientPool.theraConnect;
 connectClientPool.activeClient; // Currently active client who can post message to console panel and be debugged.
 
@@ -56,6 +59,10 @@ connectClientPool.addNewClient = function (req) {
         this.selectActiveDevice(null, newClient);
         // update new template
         newClient.connect.sendUTF(this._oreomessage);
+        newClient.connect.sendUTF(this._mockModulesMesasage);
+        this._mockDataMessageMap.forEach(function (mockMessage, api, map) {
+            newClient.connect.sendUTF(mockMessage);
+        })
         // Push debugger server address to newly connected client.
         if (this.theraConnect && this.theraConnect.debugServer) {
             console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
@@ -184,9 +191,18 @@ connectClientPool.allClientHeaders = function () {
 }
 
 const OREOMESSAGE_PRE = '{"message":"oreo"'
+const MOCK_DATA_MESSAGE_PRE = '{"message":"mockData"'
+const MOCK_MODULES_MESSAGE_PRE = '{"message":"mockModules"'
+
 connectClientPool.sendAllClientMessage = function (message) {
     if ((typeof message === 'string') && message.startsWith(OREOMESSAGE_PRE)) {
         this._oreomessage = message
+    }
+    if ((typeof message === 'string') && message.startsWith(MOCK_DATA_MESSAGE_PRE)) {
+        this._mockDataMessageMap.set(JSON.parse(message).data.mockList[0].api,message)
+    }
+    if ((typeof message === 'string') && message.startsWith(MOCK_MODULES_MESSAGE_PRE)) {
+        this._mockModulesMesasage = message
     }
     this.checkClientlive();
     this.clients.forEach(function (client) {
