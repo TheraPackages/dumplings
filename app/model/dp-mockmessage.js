@@ -27,13 +27,14 @@ module.exports = (function () {
 
     function createMockModulesMessageObject(modules) {
         var json  = {
-            'message': 'mockModule',
+            'message': 'mockModules',
             'data': {
                 'modules': [
                 ],
             },
         }
         json.data.modules = modules
+        return json
     }
 
     return {

@@ -38,7 +38,12 @@ module.exports = function * () {
         let data = this.request.body.data
         this.app.mockConfig = data
         // 2. watch mock file
+        
         if (data.hasOwnProperty('mockData') && data.mockData instanceof Array) {
+            this.app.mockfileMap.forEach((val, key, map) => {
+                that.app.gazeWather.remove(key);
+            })
+            
             data.mockData.forEach(function (element) {
                 that.app.gazeWather.add(element.file)
                 fs.readFile(element.file, 'utf8', (error, data) => {

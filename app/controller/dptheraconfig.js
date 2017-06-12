@@ -31,10 +31,7 @@ module.exports = function * () {
 
     if (this.req.method === 'POST') {
         var that = this;
-        this.app.mockfileMap.forEach((val, key, map) => {
-            that.app.gazeWather.remove(key);
-        })
-
+        
         let data = this.request.body.data
         this.app.theraConfig = objToStrMap(data)
         // 1. watch main.we/main.vue
