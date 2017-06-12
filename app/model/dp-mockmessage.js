@@ -29,8 +29,7 @@ module.exports = (function () {
         var json  = {
             'message': 'mockModules',
             'data': {
-                'mockModules': [
-                ],
+                'mockModules': {},
             },
         }
         json.data.mockModules = modules

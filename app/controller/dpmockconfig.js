@@ -57,7 +57,7 @@ module.exports = function * () {
                 })
             })
         }
-        if (data.hasOwnProperty('mockModules') && data.mockModules instanceof Array) {
+        if (data.hasOwnProperty('mockModules')) {
             var mockModulesMsg = mockMessageUtil.createMockModulesMessageObject(data.mockModules)
             that.app.clientPool.sendAllClientMessage(JSON.stringify(mockModulesMsg))
         }
