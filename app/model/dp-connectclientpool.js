@@ -108,33 +108,55 @@ connectClientPool.onClientDisconnected = function (client, reason) {
 
 connectClientPool.handleTheraMessage = function (message) {
     if (message.type === 'utf8') {
-        var isCtrl = this.filterControlMessage(message.utf8Data);
-        if (!isCtrl && this.activeClient) {
-            // Send to activated connected client.
-            this.activeClient.connect.sendUTF(message.utf8Data);
+      try {
+        var textMsg = message.utf8Data;
+        var jsonMsg = JSON.parse(textMsg);
+        var data = jsonMsg.data;
+        if (jsonMsg.message === 'debugger') {
+          this.handleDebuggerMessage(jsonMsg, textMsg);
+        } else if (jsonMsg.message === 'inspector') {
+          this.handleInspectorMessage(jsonMsg, textMsg);
+        } else if (jsonMsg.message === 'oreo') {
+          this.handleOreoMessage(jsonMsg, textMsg);
+        } else {
+          console.log('Unknown message. ' + textMsg);
+          this.handleUnkownMessage(jsonMsg, textMsg);
         }
+      } catch (e) {
+        console.error(e);
+      }
     }
 }
 
-connectClientPool.filterControlMessage = function (text) {
-    try {
-        var jsonMsg = JSON.parse(text);
-        var data = jsonMsg.data;
-        if (jsonMsg && jsonMsg.message === 'debugger' && data && data.debugger && data.debugger.serverAddress) {
-      // Broadcast debug-server address to all connected clients.
-            console.log('Thera push debug-server address: ', text);
-            this.theraConnect.debugServer = text;
-            this.sendAllClientMessage([text]);
-            return true;
-        } else if (jsonMsg && jsonMsg.message === 'debugger' && data && data.debugger && data.debugger.device) {
-            console.log('Thera command activate target device: ', text);
-            this.selectActiveDevice(data.debugger.device, null);
-            return true;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-    return false;
+connectClientPool.handleUnkownMessage = function(jsonMsg, textMsg) {
+  // Just send it away.
+  this.sendAllClientMessage(textMsg);
+}
+
+connectClientPool.handleOreoMessage = function(jsonMsg, textMsg) {
+    this._oreomessage = textMsg;  // Cache for later usage.
+    this.sendAllClientMessage(textMsg);
+}
+
+connectClientPool.handleInspectorMessage = function(jsonMsg, textMsg) {
+  if (this.activeClient) {
+    // Send to activated connected client.
+    this.activeClient.connect.sendUTF(textMsg);
+  }
+}
+
+connectClientPool.handleDebuggerMessage = function(jsonMsg, textMsg) {
+
+  if (jsonMsg && jsonMsg.message === 'debugger' && data && data.debugger && data.debugger.serverAddress) {
+    // Broadcast debug-server address to all connected clients.
+    console.log('Thera push debug-server address: ', textMsg);
+    this.theraConnect.debugServer = textMsg;
+    this.sendAllClientMessage([textMsg]);
+
+  } else if (jsonMsg && jsonMsg.message === 'debugger' && data && data.debugger && data.debugger.device) {
+    console.log('Thera command activate target device: ', textMsg);
+    this.selectActiveDevice(data.debugger.device, null);
+  }
 }
 
 connectClientPool.selectActiveDevice = function (device, newClient) {
@@ -147,7 +169,6 @@ connectClientPool.selectActiveDevice = function (device, newClient) {
         for (var i = 0; i < this.clients.length; i++) {
             var client = this.clients[i];
             if (client.device) {
-        // console.log('device:', device , client['device']);
                 if (device.name === client.device.name) {
                     this.activeClient = client;
                     console.log('Change active device', device);
@@ -183,11 +204,7 @@ connectClientPool.allClientHeaders = function () {
     return headers;
 }
 
-const OREOMESSAGE_PRE = '{"message":"oreo"'
 connectClientPool.sendAllClientMessage = function (message) {
-    if ((typeof message === 'string') && message.startsWith(OREOMESSAGE_PRE)) {
-        this._oreomessage = message
-    }
     this.checkClientlive();
     this.clients.forEach(function (client) {
         client.connect.sendUTF(message);
@@ -210,6 +227,7 @@ connectClientPool.sendTheraMessage = function (message) {
     }
 }
 
+// @Deprecate
 connectClientPool.sendTransformSuccessNotify = function (weexLogs) {
     if (this.theraConnect) {
         let message = JSON.stringify({ 'message': 'transformSuccessNotify', 'data': { 'logs': weexLogs } })
@@ -217,6 +235,7 @@ connectClientPool.sendTransformSuccessNotify = function (weexLogs) {
     }
 }
 
+// @Deprecate
 connectClientPool.sendTransformFailedNotify = function (err) {
     if (this.theraConnect) {
         let message = JSON.stringify({ 'message': 'transformFailedNotify', 'data': { 'error': err } })
