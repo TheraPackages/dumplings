@@ -42,18 +42,21 @@ module.exports = function (app) {
     let gaze = new Gaze([], {'interval': 1, 'mode': 'watch', 'debounceDelay': 1000});
     gaze.on('changed', function (filepath) {
         app.transformer.transform(filepath, app.clientPool, app.theraConfig.get('transformPath'))
-        fs.readFile(filepath, 'utf8', function (err, data) {
-            if (err) {
-                throw err;
-            } else if (app.mockfileMap.get(filepath) && data) {
-                var mockModel = app.mockfileMap.get(filepath)
-                mockModel.data.mockList.forEach((element) => {
-                    if (filepath === element.file) {
-                        clientPool.sendAllClientMessage(JSON.stringify(mockMessageUtil.createMockDataMessageObject(filepath, element.api, element.path, data)))
-                    }
-                })
-            }
-        })
+
+        setTimeout(function(){
+            fs.readFile(filepath, 'utf8', function (err, data) {
+                if (err) {
+                    throw err;
+                } else if (app.mockfileMap.get(filepath) && data) {
+                    var mockModel = app.mockfileMap.get(filepath)
+                    mockModel.data.mockList.forEach((element) => {
+                        if (filepath === element.file) {
+                            clientPool.sendAllClientMessage(JSON.stringify(mockMessageUtil.createMockDataMessageObject(filepath, element.api, element.path, data)))
+                        }
+                    })
+                }
+            })
+            },500);
     });
 
     app.gazeWather = gaze;
