@@ -1,6 +1,6 @@
 {
   "name": "dumplings",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Thera IDE Server",
   "dependencies": {
     "array-events": "^1.0.0",
