@@ -13,6 +13,8 @@ function ConnectClientPool() {
   this._oreomessage = '';
   this.theraConnect = null;
   this.activeClient = null; // Currently active client who can post message to console panel and be debugged.
+  this._mockModulesMesasage = '';
+  this._mockDataMessageMap = new Map();
 
   this.clients = new EventedArray();
   this.clients.on('change', this._clientsOnChange.bind(this));
@@ -36,6 +38,11 @@ ConnectClientPool.prototype = {
       this.selectActiveDevice(null, newClient);
       // update new template
       newClient.connect.sendUTF(this._oreomessage);
+      // update mock object.
+      newClient.connect.sendUTF(this._mockModulesMesasage);
+      this._mockDataMessageMap.forEach(function (mockMessage, api, map) {
+          newClient.connect.sendUTF(mockMessage);
+      })
       // Push debugger server address to newly connected client.
       if (this.theraConnect && this.theraConnect.debugServer) {
           console.log('Tell newly connected client the debug-server address.', this.theraConnect.debugServer);
@@ -146,6 +153,10 @@ ConnectClientPool.prototype = {
           this._handleInspectorMessage(jsonMsg, textMsg);
         } else if (jsonMsg.message === 'oreo') {
           this._handleOreoMessage(jsonMsg, textMsg);
+        } else if (jsonMsg.message === 'mockData') {
+          this._handleMockDataMessage(jsonMsg, textMsg);
+        } else if (jsonMsg.message === 'mockModules') {
+          this._handleMockModuleMessage(jsonMsg, textMsg);
         } else {
           console.log('Unknown message. ' + textMsg);
           this._handleUnkownMessage(jsonMsg, textMsg);
@@ -159,6 +170,14 @@ ConnectClientPool.prototype = {
   _handleUnkownMessage: function(jsonMsg, textMsg) {
     // Just send it away.
     this.sendAllClientMessage(textMsg);
+  },
+
+  _handleMockDataMessage: function(jsonMsg, textMsg) {
+    this._mockDataMessageMap.set(jsonMsg.data.mockList[0].api, textMsg);
+  },
+
+  _handleMockModuleMessage: function(jsonMsg, textMsg) {
+    this._mockModulesMesasage = textMsg;
   },
 
   _handleOreoMessage: function(jsonMsg, textMsg) {

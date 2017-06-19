@@ -16,8 +16,9 @@ let Gaze = require('gaze').Gaze;                    // https://github.com/shama/
 let WebSocketServer = require('websocket').server;  // https://github.com/theturtle32/WebSocket-Node
 
 let clientPool = require('./app/model/dp-connectclientpool')
-// let WeexTransformHelper = require('./app/model/dp-weexhelper')
+let WeexTransformHelper = require('./app/model/dp-weexhelper')
 let createMockMessageObject = require('./app/model/dp-mockmessage')
+let mockMessageUtil = require('./app/model/dp-mockmessage')
 
 
 module.exports = function (app) {
@@ -37,23 +38,26 @@ module.exports = function (app) {
     app.theraConfig = new Map();
     // register responder
     app.clientPool = clientPool;
-    // app.transformer = new WeexTransformHelper()
+    app.transformer = new WeexTransformHelper()
 
-    let gaze = new Gaze([], { 'interval': 1, 'mode': 'watch', 'debounceDelay': 1000 });
+    let gaze = new Gaze([], {'interval': 1, 'mode': 'watch', 'debounceDelay': 1000});
     gaze.on('changed', function (filepath) {
-        // app.transformer.transform(filepath, app.clientPool, app.theraConfig.get('transformPath'))
-        fs.readFile(filepath, 'utf8', function (err, data) {
-            if (err) {throw err;}
-            // watch mock data file
-            if (app.mockfileMap.get(filepath)) {
-                var mockModel = app.mockfileMap.get(filepath)
-                mockModel.data.mockList.forEach((element) => {
-                    if (filepath === element.file) {
-                        clientPool.sendAllClientMessage(JSON.stringify(createMockMessageObject(filepath, element.api, element.path, data)))
-                    }
-                })
-            }
-        })
+        app.transformer.transform(filepath, app.clientPool, app.theraConfig.get('transformPath'))
+
+        setTimeout(function(){
+            fs.readFile(filepath, 'utf8', function (err, data) {
+                if (err) {
+                    throw err;
+                } else if (app.mockfileMap.get(filepath) && data) {
+                    var mockModel = app.mockfileMap.get(filepath)
+                    mockModel.data.mockList.forEach((element) => {
+                        if (filepath === element.file) {
+                            clientPool.sendAllClientMessage(JSON.stringify(mockMessageUtil.createMockDataMessageObject(filepath, element.api, element.path, data)))
+                        }
+                    })
+                }
+            })
+            },500);
     });
 
     app.gazeWather = gaze;
