@@ -17,7 +17,6 @@ let WebSocketServer = require('websocket').server;  // https://github.com/thetur
 
 let clientPool = require('./app/model/dp-connectclientpool')
 let WeexTransformHelper = require('./app/model/dp-weexhelper')
-let createMockMessageObject = require('./app/model/dp-mockmessage')
 let mockMessageUtil = require('./app/model/dp-mockmessage')
 
 
