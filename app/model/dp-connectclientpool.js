@@ -234,7 +234,28 @@ ConnectClientPool.prototype = {
     this.clients.forEach(function (client) {
       client.connect.sendUTF(message);
     });
+
+      if (this._getMessageType(message) == 'oreo') {
+          this._oreomessage = message
+      }
+      if (this._getMessageType(message) == 'mockData') {
+          this._mockDataMessageMap.set(JSON.parse(message).data.mockList[0].api,message)
+      }
+      if (this._getMessageType(message) == 'mockModules') {
+          this._mockModulesMesasage = message
+      }
+
   },
+
+    _getMessageType:function(textMsg){
+        if (textMsg.type === 'utf8') {
+            var textMsg = textMsg.utf8Data;
+            var jsonMsg = JSON.parse(textMsg);
+            var data = jsonMsg.data;
+            return jsonMsg.message
+        }
+        return textMsg
+    },
 
   sendWeexLogs: function (logs) {
     if (this.theraConnect) {
