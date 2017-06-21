@@ -25,6 +25,17 @@ module.exports = (function () {
         return model;
     }
 
+    function createMockApiListMessageObject(apis) {
+        const json = {
+            'message': 'mockApiList',
+            'data': {
+                'apiList': []
+            },
+        }
+        json.data.apiList = apis
+        return json;
+    }
+
     function createMockModulesMessageObject(modules) {
         var json  = {
             'message': 'mockModules',
@@ -38,6 +49,7 @@ module.exports = (function () {
 
     return {
         createMockDataMessageObject: createMockDataMessageObject,
-        createMockModulesMessageObject: createMockModulesMessageObject
+        createMockModulesMessageObject: createMockModulesMessageObject,
+        createMockApiListMessageObject: createMockApiListMessageObject,
     }
 }())

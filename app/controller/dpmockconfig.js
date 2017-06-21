@@ -44,8 +44,10 @@ module.exports = function * () {
                 that.app.gazeWather.remove(key);
             })
             
+            var apiList = new Array()
             data.mockData.forEach(function (element) {
                 that.app.gazeWather.add(element.file)
+                apiList.push(element.api)
                 fs.readFile(element.file, 'utf8', (error, data) => {
                     if (error) {
                         console.error(error)
@@ -56,6 +58,8 @@ module.exports = function * () {
                     }
                 })
             })
+            var mockApiListMsg = mockMessageUtil.createMockApiListMessageObject(apiList)
+            that.app.clientPool.sendAllClientMessage(JSON.stringify(mockApiListMsg))
         }
         if (data.hasOwnProperty('mockModules')) {
             var mockModulesMsg = mockMessageUtil.createMockModulesMessageObject(data.mockModules)
