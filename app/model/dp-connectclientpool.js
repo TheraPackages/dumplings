@@ -39,7 +39,6 @@ ConnectClientPool.prototype = {
             // update new template
             newClient.connect.sendUTF(this._oreomessage);
             // update mock object.
-            console.error('connect client send mock: ' + this._mockModulesMesasage);
             newClient.connect.sendUTF(this._mockModulesMesasage);
             this._mockDataMessageMap.forEach(function (mockMessage, api, map) {
                 newClient.connect.sendUTF(mockMessage);
