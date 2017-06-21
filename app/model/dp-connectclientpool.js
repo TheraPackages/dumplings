@@ -14,6 +14,7 @@ function ConnectClientPool() {
     this.theraConnect = null;
     this.activeClient = null; // Currently active client who can post message to console panel and be debugged.
     this._mockModulesMesasage = '';
+    this._mockApiListMesasage = '';
     this._mockDataMessageMap = new Map();
 
     this.clients = new EventedArray();
@@ -40,6 +41,7 @@ ConnectClientPool.prototype = {
             newClient.connect.sendUTF(this._oreomessage);
             // update mock object.
             newClient.connect.sendUTF(this._mockModulesMesasage);
+            newClient.connect.sendUTF(this._mockApiListMesasage);
             this._mockDataMessageMap.forEach(function (mockMessage, api, map) {
                 newClient.connect.sendUTF(mockMessage);
             })
@@ -168,14 +170,6 @@ ConnectClientPool.prototype = {
         this.sendAllClientMessage(textMsg);
     },
 
-    _handleMockDataMessage: function (jsonMsg, textMsg) {
-        this._mockDataMessageMap.set(jsonMsg.data.mockList[0].api, textMsg);
-    },
-
-    _handleMockModuleMessage: function (jsonMsg, textMsg) {
-        this._mockModulesMesasage = textMsg;
-    },
-
     _handleOreoMessage: function (jsonMsg, textMsg) {
         this._oreomessage = textMsg;  // Cache for later usage.
         this.sendAllClientMessage(textMsg);
@@ -242,6 +236,8 @@ ConnectClientPool.prototype = {
         }
         if (this._getMessageType(message) == 'mockModules') {
             this._mockModulesMesasage = message
+        }if (this._getMessageType(message) == 'mockApiList') {
+            this._mockApiListMesasage = message
         }
     },
 
